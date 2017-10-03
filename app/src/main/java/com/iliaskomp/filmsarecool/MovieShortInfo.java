@@ -4,7 +4,7 @@ package com.iliaskomp.filmsarecool;
  * Created by IliasKomp on 12/09/17.
  */
 
-public class FilmShortInfo {
+public class MovieShortInfo {
     private int voteCount;
     private int id;
     private boolean video;
@@ -19,4 +19,24 @@ public class FilmShortInfo {
     private String adult;
     private String overview;
     private String releaseDate;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public int[] getGenreIds() {
+        return genreIds;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
 }
