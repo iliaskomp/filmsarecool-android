@@ -9,8 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,13 +38,24 @@ import static com.iliaskomp.filmsarecool.ConfigApi.API_KEY;
 public class FilmListFragment extends Fragment {
     private static final String TAG = "FilmListFragment";
 
+    private static final String ARG_QUERY_STRING = "query_string";
+
     private RecyclerView mFilmRecyclerView;
     private FilmAdapter mFilmAdapter;
 
-    private EditText mSearchFilmsEditText;
+//    private EditText mSearchFilmsEditText;
 
     private List<MovieShortInfo> mFilms;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (getArguments() != null) {
+            String query = getArguments().getString(ARG_QUERY_STRING);
+            fetchMovieList(query);
+        }
+    }
 
     @Nullable
     @Override
@@ -56,18 +65,16 @@ public class FilmListFragment extends Fragment {
         mFilmRecyclerView = (RecyclerView) view.findViewById(R.id.film_list_recycler_view);
         mFilmRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mSearchFilmsEditText = (EditText) view.findViewById(R.id.search_films_edit_text);
-
-        Button searchButton = (Button) view.findViewById(R.id.search_button);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String searchQuery = String.valueOf(mSearchFilmsEditText.getText());
-                fetchMovieList(searchQuery);
-            }
-        });
-
-//        updateUI();
+//        mSearchFilmsEditText = (EditText) view.findViewById(R.id.search_films_edit_text);
+//
+//        Button searchButton = (Button) view.findViewById(R.id.search_button);
+//        searchButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String searchQuery = String.valueOf(mSearchFilmsEditText.getText());
+//                fetchMovieList(searchQuery);
+//            }
+//        });
         return view;
     }
 
@@ -91,7 +98,7 @@ public class FilmListFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(), "There has been an error with your request.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), "There has been an error with your request.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -154,6 +161,15 @@ public class FilmListFragment extends Fragment {
         public int getItemCount() {
             return mFilms.size();
         }
+    }
+
+    public static FilmListFragment newInstance(String query) {
+        Bundle args = new Bundle();
+        args.putString(ARG_QUERY_STRING, query);
+
+        FilmListFragment fragment = new FilmListFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 }
