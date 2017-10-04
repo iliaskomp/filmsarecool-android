@@ -1,14 +1,15 @@
 package com.iliaskomp.filmsarecool;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -28,8 +30,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.iliaskomp.filmsarecool.ConfigApi.API_BASE_URL;
-import static com.iliaskomp.filmsarecool.ConfigApi.API_KEY;
+import static com.iliaskomp.filmsarecool.TmdbConfig.API_BASE_URL;
+import static com.iliaskomp.filmsarecool.TmdbConfig.API_IMAGE_BASE_URL;
+import static com.iliaskomp.filmsarecool.TmdbConfig.API_KEY;
 
 /**
  * Created by IliasKomp on 12/09/17.
@@ -40,16 +43,18 @@ public class FilmListFragment extends Fragment {
 
     private static final String ARG_QUERY_STRING = "query_string";
 
+    private RequestQueue mRequestQueue;
+
     private RecyclerView mFilmRecyclerView;
     private FilmAdapter mFilmAdapter;
-
-//    private EditText mSearchFilmsEditText;
 
     private List<MovieShortInfo> mFilms;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mRequestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
 
         if (getArguments() != null) {
             String query = getArguments().getString(ARG_QUERY_STRING);
@@ -65,16 +70,6 @@ public class FilmListFragment extends Fragment {
         mFilmRecyclerView = (RecyclerView) view.findViewById(R.id.film_list_recycler_view);
         mFilmRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-//        mSearchFilmsEditText = (EditText) view.findViewById(R.id.search_films_edit_text);
-//
-//        Button searchButton = (Button) view.findViewById(R.id.search_button);
-//        searchButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                String searchQuery = String.valueOf(mSearchFilmsEditText.getText());
-//                fetchMovieList(searchQuery);
-//            }
-//        });
         return view;
     }
 
@@ -84,8 +79,6 @@ public class FilmListFragment extends Fragment {
     }
 
     void fetchMovieList(String query) {
-        Log.d(TAG, "fetchMovieList called");
-
         String requestUrl = API_BASE_URL + "search/movie?" + "query=" + query + "&api_key=" + API_KEY;
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -102,13 +95,12 @@ public class FilmListFragment extends Fragment {
             }
         });
 
-        RequestQueue requestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
-        requestQueue.add(request);
+        mRequestQueue.add(request);
     }
 
-    private List<MovieShortInfo> deserializeResult(JSONObject response) {
-        Log.d(TAG, "deserializeResult called");
 
+
+    private List<MovieShortInfo> deserializeResult(JSONObject response) {
         List<MovieShortInfo> filmsShort = new ArrayList<>();
 
         try {
@@ -130,10 +122,45 @@ public class FilmListFragment extends Fragment {
 
     private class FilmHolder extends RecyclerView.ViewHolder {
         public TextView mTitleTextView;
+        public ImageView mPosterImageView;
 
         public FilmHolder(View itemView) {
             super(itemView);
-            mTitleTextView = (TextView) itemView;
+            mTitleTextView = (TextView) itemView.findViewById(R.id.film_item_title_text_view);
+            mPosterImageView = (ImageView) itemView.findViewById(R.id.film_item_poster_image);
+        }
+
+        public void bindFilm(MovieShortInfo film) {
+            mTitleTextView.setText(film.getTitle());
+            setPosterImage(film);
+        }
+
+        private void setPosterImage(final MovieShortInfo film) {
+            String posterPath = film.getPosterPath();
+            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.w45 + posterPath;
+
+            if (posterPath != null) {
+                ImageRequest imageRequest = new ImageRequest(
+                        imageRequestUrl,
+                        new Response.Listener<Bitmap>() {
+                            @Override
+                            public void onResponse(Bitmap response) {
+                                film.setPosterImage(response);
+                                mPosterImageView.setImageBitmap(response);
+                            }
+                        },
+                        0,
+                        0,
+                        ImageView.ScaleType.CENTER_CROP,
+                        Bitmap.Config.RGB_565,
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                            }
+                        });
+                mRequestQueue.add(imageRequest);
+            }
         }
     }
 
@@ -147,14 +174,14 @@ public class FilmListFragment extends Fragment {
         @Override
         public FilmHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_film, parent, false);
             return new FilmHolder(view);
         }
 
         @Override
         public void onBindViewHolder(FilmHolder holder, int position) {
             MovieShortInfo film = mFilms.get(position);
-            holder.mTitleTextView.setText(film.getTitle());
+            holder.bindFilm(film);
         }
 
         @Override

@@ -1,5 +1,7 @@
 package com.iliaskomp.filmsarecool;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by IliasKomp on 12/09/17.
  */
@@ -19,6 +21,7 @@ public class MovieShortInfo {
     private String adult;
     private String overview;
     private String releaseDate;
+    private Bitmap posterImage;
 
     public int getId() {
         return id;
@@ -38,5 +41,17 @@ public class MovieShortInfo {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public Bitmap getPosterImage() {
+        return posterImage;
+    }
+
+    public void setPosterImage(Bitmap posterImage) {
+        this.posterImage = posterImage;
     }
 }
