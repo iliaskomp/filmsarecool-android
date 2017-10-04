@@ -104,7 +104,7 @@ public class FilmListFragment extends Fragment {
         List<MovieShortInfo> filmsShort = new ArrayList<>();
 
         try {
-//            int numberOfPages = (int) response.get("total_pages");
+            //int numberOfPages = (int) response.get("total_pages");
             int numberOfResults = (int) response.get("total_results");
             JSONArray results = response.getJSONArray("results");
 
@@ -115,7 +115,7 @@ public class FilmListFragment extends Fragment {
                 filmsShort.add(film);
             }
         } catch (JSONException e) {
-            Toast.makeText(getActivity(), "There has been a JSON error with the application.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "There has been a GSON error.", Toast.LENGTH_LONG).show();
         }
         return filmsShort;
     }
@@ -137,9 +137,15 @@ public class FilmListFragment extends Fragment {
 
         private void setPosterImage(final MovieShortInfo film) {
             String posterPath = film.getPosterPath();
-            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.w45 + posterPath;
+            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.w92 + posterPath;
 
-            if (posterPath != null) {
+            if (posterPath == null) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    mPosterImageView.setImageDrawable(getActivity().getDrawable(R.drawable.noposter_w92));
+                } else {
+                    mPosterImageView.setImageDrawable(getResources().getDrawable(R.drawable.noposter_w92));
+                }
+            } else {
                 ImageRequest imageRequest = new ImageRequest(
                         imageRequestUrl,
                         new Response.Listener<Bitmap>() {
