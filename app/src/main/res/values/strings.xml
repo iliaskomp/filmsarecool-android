@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FilmsAreCool</string>
+    <string name="dash">" - "</string>
 </resources>

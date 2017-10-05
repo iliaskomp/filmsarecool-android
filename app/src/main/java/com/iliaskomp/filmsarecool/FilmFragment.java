@@ -6,7 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONObject;
+
+import static com.iliaskomp.filmsarecool.TmdbConfig.API_BASE_URL;
+import static com.iliaskomp.filmsarecool.TmdbConfig.API_KEY;
 
 /**
  * Created by IliasKomp on 05/10/17.
@@ -15,18 +30,31 @@ import android.widget.TextView;
 public class FilmFragment extends Fragment {
     public static final String ARG_FILM_ID = "film_id";
 
-    private String mFilmId;
-    private TextView mFilmTitle;
+    private static RequestQueue mRequestQueue;
+
+    private TextView mTitleText;
+    private TextView mRuntimeText;
+    private TextView mGenresText;
+    private TextView mBudgetText;
+    private TextView mRevenueText;
+    private ImageView mPosterImage;
+    private TextView mImdbRatingText;
+    private TextView mTmdbRatingText;
+    private TextView mOverviewText;
+    private TextView mDirectorText;
+    private TextView mWriterText;
+    private TextView mComposerText;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mFilmId = (String)getArguments().get(ARG_FILM_ID);
-
         if (getArguments() != null) {
-            mFilmId = (String)getArguments().get(ARG_FILM_ID);
-//            fetchFilmInfo()
+            mRequestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
+
+            String filmId = (String)getArguments().get(ARG_FILM_ID);
+            fetchFilmInfo(filmId);
         }
     }
 
@@ -36,12 +64,68 @@ public class FilmFragment extends Fragment {
             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
 
-        mFilmTitle = (TextView) view.findViewById(R.id.film_title_text_view);
-        mFilmTitle.setText("Helllo World");
-
+        mTitleText = (TextView) view.findViewById(R.id.title_text_view);
+        mRuntimeText = (TextView) view.findViewById(R.id.runtime_text_view);
+        mGenresText = (TextView) view.findViewById(R.id.genres_text_view);
+        mBudgetText = (TextView) view.findViewById(R.id.budget_text_view);
+        mRevenueText = (TextView) view.findViewById(R.id.revenue_text_view);
+        mPosterImage = (ImageView) view.findViewById(R.id.poster_image_view);
+        mImdbRatingText = (TextView) view.findViewById(R.id.imdb_rating_text_view);
+        mTmdbRatingText = (TextView) view.findViewById(R.id.tmdb_rating_text_view);
+        mOverviewText = (TextView) view.findViewById(R.id.overview_text_view);
+        mDirectorText = (TextView) view.findViewById(R.id.director_text_view);
+        mWriterText = (TextView) view.findViewById(R.id.writer_text_view);
+        mComposerText = (TextView) view.findViewById(R.id.composer_text_view);
 
         return view;
+    }
 
+    private void updateUI(FilmFullInfo film) {
+        mTitleText.setText(film.getTitle());
+        mRuntimeText.setText(film.getRuntimeString());
+        mGenresText.setText(film.getGenresString());
+        mOverviewText.setText(film.getOverview());
+        mBudgetText.setText(film.getBudget());
+        mRevenueText.setText(film.getRevenue());
+        mTmdbRatingText.setText(film.getVoteAverage());
+        mDirectorText.setText(film.getDirector());
+        mWriterText.setText(film.getWriter());
+        mComposerText.setText(film.getComposer());
+
+//       TODO mPosterImage
+    }
+
+    void fetchFilmInfo(String filmId) {
+//        https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
+
+        String requestUrl = API_BASE_URL + "movie/" + filmId + "?api_key=" + API_KEY;
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                FilmFullInfo film = deserializeResult(response);
+                updateUI(film);
+                // getCredits, getVideos
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getActivity(), "There has been an error with your request.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        mRequestQueue.add(request);
+
+    }
+
+
+
+    private FilmFullInfo deserializeResult(JSONObject response) {
+        Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+
+        FilmFullInfo film = gson.fromJson(String.valueOf(response), FilmFullInfo.class);
+        return film;
     }
 
     public static FilmFragment newInstance(String filmId) {

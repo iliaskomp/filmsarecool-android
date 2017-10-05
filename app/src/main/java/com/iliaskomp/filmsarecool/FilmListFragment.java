@@ -136,7 +136,7 @@ public class FilmListFragment extends Fragment {
         public void bindFilm(FilmShortInfo film) {
             mFilm = film;
             mTitleTextView.setText(film.getTitle());
-            setPosterImage(film);
+            NetworkOperations.setPosterImage(film);
         }
 
         private void setPosterImage(final FilmShortInfo film) {
