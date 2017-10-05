@@ -11,6 +11,8 @@ public class TmdbConfig {
     public final static String API_IMAGE_BASE_URL = "https://image.tmdb.org/t/p/";
 
     public class PosterSize {
+        public static final String selected = "w300";
+
         public static final String w45 = "w45";
         public static final String w92 = "w92";
         public static final String w154 = "w154";

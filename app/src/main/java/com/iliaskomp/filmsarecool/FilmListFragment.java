@@ -4,7 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +68,7 @@ public class FilmListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film_list, container, false);
 
         mFilmRecyclerView = (RecyclerView) view.findViewById(R.id.film_list_recycler_view);
-        mFilmRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mFilmRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
 
         return view;
     }
@@ -137,14 +137,10 @@ public class FilmListFragment extends Fragment {
 
         private void setPosterImage(final MovieShortInfo film) {
             String posterPath = film.getPosterPath();
-            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.w92 + posterPath;
+            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.selected + posterPath;
 
             if (posterPath == null) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    mPosterImageView.setImageDrawable(getActivity().getDrawable(R.drawable.noposter_w92));
-                } else {
-                    mPosterImageView.setImageDrawable(getResources().getDrawable(R.drawable.noposter_w92));
-                }
+                setDefaultPoster(mPosterImageView);
             } else {
                 ImageRequest imageRequest = new ImageRequest(
                         imageRequestUrl,
@@ -162,11 +158,19 @@ public class FilmListFragment extends Fragment {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-
+                                setDefaultPoster(mPosterImageView);
                             }
                         });
                 mRequestQueue.add(imageRequest);
             }
+        }
+    }
+
+    public void setDefaultPoster(ImageView mPosterImageView) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            mPosterImageView.setImageDrawable(getActivity().getDrawable(R.drawable.noposter_w92));
+        } else {
+            mPosterImageView.setImageDrawable(getResources().getDrawable(R.drawable.noposter_w92));
         }
     }
 

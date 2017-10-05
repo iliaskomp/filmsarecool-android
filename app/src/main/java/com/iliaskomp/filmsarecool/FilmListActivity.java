@@ -48,15 +48,8 @@ public class FilmListActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                FragmentManager fm = getSupportFragmentManager();
                 Fragment fragment = FilmListFragment.newInstance(query);
-
-                fm.beginTransaction()
-                        .replace(R.id.fragment_container, fragment)
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .addToBackStack(null)
-                        .commit();
-
+                replacePrevFragmentWith(fragment);
                 return false;
             }
             @Override
@@ -65,5 +58,15 @@ public class FilmListActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private void replacePrevFragmentWith(Fragment fragment) {
+        FragmentManager fm = getSupportFragmentManager();
+
+        fm.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .addToBackStack(null)
+                .commit();
     }
 }
