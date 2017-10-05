@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.filmmodel;
 
 import java.util.ArrayList;
 

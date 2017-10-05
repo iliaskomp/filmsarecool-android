@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.filmview;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,11 +17,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.iliaskomp.filmsarecool.R;
+import com.iliaskomp.filmsarecool.filmmodel.FilmFullInfo;
+import com.iliaskomp.filmsarecool.network.FilmPosterFetching;
+import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 
 import org.json.JSONObject;
 
-import static com.iliaskomp.filmsarecool.TmdbConfig.API_BASE_URL;
-import static com.iliaskomp.filmsarecool.TmdbConfig.API_KEY;
+import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_BASE_URL;
+import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_KEY;
 
 /**
  * Created by IliasKomp on 05/10/17.
@@ -44,7 +48,6 @@ public class FilmFragment extends Fragment {
     private TextView mDirectorText;
     private TextView mWriterText;
     private TextView mComposerText;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

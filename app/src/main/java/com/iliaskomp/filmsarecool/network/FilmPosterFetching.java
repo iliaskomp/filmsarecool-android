@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.network;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,8 +8,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.iliaskomp.filmsarecool.filmmodel.FilmShortInfo;
+import com.iliaskomp.filmsarecool.R;
+import com.iliaskomp.filmsarecool.config.TmdbConfig;
 
-import static com.iliaskomp.filmsarecool.TmdbConfig.API_IMAGE_BASE_URL;
+import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_IMAGE_BASE_URL;
 
 /**
  * Created by IliasKomp on 05/10/17.

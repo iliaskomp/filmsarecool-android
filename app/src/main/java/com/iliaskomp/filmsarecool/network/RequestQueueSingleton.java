@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.network;
 
 import android.content.Context;
 

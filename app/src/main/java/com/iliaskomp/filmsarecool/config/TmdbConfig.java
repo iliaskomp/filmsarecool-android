@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.config;
 
 /**
  * Created by IliasKomp on 12/09/17.

@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".FilmListActivity"
+        <activity android:name=".filmlistview.FilmListActivity"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,7 +23,7 @@
                        android:value="@xml/searchable"/>
         </activity>
 
-        <activity android:name=".FilmActivity"/>
+        <activity android:name=".filmview.FilmActivity"/>
     </application>
 
 </manifest>

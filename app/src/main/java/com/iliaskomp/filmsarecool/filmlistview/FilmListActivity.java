@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool;
+package com.iliaskomp.filmsarecool.filmlistview;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
+
+import com.iliaskomp.filmsarecool.R;
 
 public class FilmListActivity extends AppCompatActivity {
 
