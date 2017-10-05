@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by IliasKomp on 12/09/17.
  */
 
-public class MovieShortInfo {
+public class FilmShortInfo {
     private int voteCount;
     private int id;
     private boolean video;

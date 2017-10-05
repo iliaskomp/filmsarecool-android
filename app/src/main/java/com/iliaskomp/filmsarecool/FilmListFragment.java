@@ -1,5 +1,6 @@
 package com.iliaskomp.filmsarecool;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -48,7 +49,7 @@ public class FilmListFragment extends Fragment {
     private RecyclerView mFilmRecyclerView;
     private FilmAdapter mFilmAdapter;
 
-    private List<MovieShortInfo> mFilms;
+    private List<FilmShortInfo> mFilms;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +59,7 @@ public class FilmListFragment extends Fragment {
 
         if (getArguments() != null) {
             String query = getArguments().getString(ARG_QUERY_STRING);
-            fetchMovieList(query);
+            fetchFilmList(query);
         }
     }
 
@@ -73,12 +74,12 @@ public class FilmListFragment extends Fragment {
         return view;
     }
 
-    public void updateUI(List<MovieShortInfo> films) {
+    public void updateUI(List<FilmShortInfo> films) {
         mFilmAdapter = new FilmAdapter(films);
         mFilmRecyclerView.setAdapter(mFilmAdapter);
     }
 
-    void fetchMovieList(String query) {
+    void fetchFilmList(String query) {
         String requestUrl = API_BASE_URL + "search/movie?" + "query=" + query + "&api_key=" + API_KEY;
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -100,8 +101,8 @@ public class FilmListFragment extends Fragment {
 
 
 
-    private List<MovieShortInfo> deserializeResult(JSONObject response) {
-        List<MovieShortInfo> filmsShort = new ArrayList<>();
+    private List<FilmShortInfo> deserializeResult(JSONObject response) {
+        List<FilmShortInfo> filmsShort = new ArrayList<>();
 
         try {
             //int numberOfPages = (int) response.get("total_pages");
@@ -111,7 +112,7 @@ public class FilmListFragment extends Fragment {
             Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
             for (int i = 0; i < numberOfResults; i++) {
-                MovieShortInfo film = gson.fromJson(String.valueOf(results.getJSONObject(i)), MovieShortInfo.class);
+                FilmShortInfo film = gson.fromJson(String.valueOf(results.getJSONObject(i)), FilmShortInfo.class);
                 filmsShort.add(film);
             }
         } catch (JSONException e) {
@@ -120,22 +121,25 @@ public class FilmListFragment extends Fragment {
         return filmsShort;
     }
 
-    private class FilmHolder extends RecyclerView.ViewHolder {
+    private class FilmHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView mTitleTextView;
         public ImageView mPosterImageView;
+        public FilmShortInfo mFilm;
 
         public FilmHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.film_item_title_text_view);
             mPosterImageView = (ImageView) itemView.findViewById(R.id.film_item_poster_image);
         }
 
-        public void bindFilm(MovieShortInfo film) {
+        public void bindFilm(FilmShortInfo film) {
+            mFilm = film;
             mTitleTextView.setText(film.getTitle());
             setPosterImage(film);
         }
 
-        private void setPosterImage(final MovieShortInfo film) {
+        private void setPosterImage(final FilmShortInfo film) {
             String posterPath = film.getPosterPath();
             String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.selected + posterPath;
 
@@ -164,6 +168,12 @@ public class FilmListFragment extends Fragment {
                 mRequestQueue.add(imageRequest);
             }
         }
+
+        @Override
+        public void onClick(View view) {
+            Intent intent = FilmActivity.newIntent(getActivity(), String.valueOf(mFilm.getId()));
+            startActivity(intent);
+        }
     }
 
     public void setDefaultPoster(ImageView mPosterImageView) {
@@ -175,9 +185,9 @@ public class FilmListFragment extends Fragment {
     }
 
     private class FilmAdapter extends  RecyclerView.Adapter<FilmHolder> {
-        private List<MovieShortInfo> mFilms;
+        private List<FilmShortInfo> mFilms;
 
-        public FilmAdapter(List<MovieShortInfo> films) {
+        public FilmAdapter(List<FilmShortInfo> films) {
             mFilms = films;
         }
 
@@ -190,7 +200,7 @@ public class FilmListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(FilmHolder holder, int position) {
-            MovieShortInfo film = mFilms.get(position);
+            FilmShortInfo film = mFilms.get(position);
             holder.bindFilm(film);
         }
 
