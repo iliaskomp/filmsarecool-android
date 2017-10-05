@@ -1,7 +1,6 @@
 package com.iliaskomp.filmsarecool;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +17,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -32,7 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.iliaskomp.filmsarecool.TmdbConfig.API_BASE_URL;
-import static com.iliaskomp.filmsarecool.TmdbConfig.API_IMAGE_BASE_URL;
 import static com.iliaskomp.filmsarecool.TmdbConfig.API_KEY;
 
 /**
@@ -136,37 +133,7 @@ public class FilmListFragment extends Fragment {
         public void bindFilm(FilmShortInfo film) {
             mFilm = film;
             mTitleTextView.setText(film.getTitle());
-            NetworkOperations.setPosterImage(film);
-        }
-
-        private void setPosterImage(final FilmShortInfo film) {
-            String posterPath = film.getPosterPath();
-            String imageRequestUrl = API_IMAGE_BASE_URL + TmdbConfig.PosterSize.selected + posterPath;
-
-            if (posterPath == null) {
-                setDefaultPoster(mPosterImageView);
-            } else {
-                ImageRequest imageRequest = new ImageRequest(
-                        imageRequestUrl,
-                        new Response.Listener<Bitmap>() {
-                            @Override
-                            public void onResponse(Bitmap response) {
-                                film.setPosterImage(response);
-                                mPosterImageView.setImageBitmap(response);
-                            }
-                        },
-                        0,
-                        0,
-                        ImageView.ScaleType.CENTER_CROP,
-                        Bitmap.Config.RGB_565,
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                setDefaultPoster(mPosterImageView);
-                            }
-                        });
-                mRequestQueue.add(imageRequest);
-            }
+            FilmPosterFetching.setPosterImage(film, mPosterImageView, getActivity());
         }
 
         @Override
@@ -176,13 +143,7 @@ public class FilmListFragment extends Fragment {
         }
     }
 
-    public void setDefaultPoster(ImageView mPosterImageView) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            mPosterImageView.setImageDrawable(getActivity().getDrawable(R.drawable.noposter_w92));
-        } else {
-            mPosterImageView.setImageDrawable(getResources().getDrawable(R.drawable.noposter_w92));
-        }
-    }
+
 
     private class FilmAdapter extends  RecyclerView.Adapter<FilmHolder> {
         private List<FilmShortInfo> mFilms;

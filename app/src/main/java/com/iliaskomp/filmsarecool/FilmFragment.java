@@ -92,7 +92,7 @@ public class FilmFragment extends Fragment {
         mWriterText.setText(film.getWriter());
         mComposerText.setText(film.getComposer());
 
-//       TODO mPosterImage
+        FilmPosterFetching.setPosterImage(film, mPosterImage, getActivity());
     }
 
     void fetchFilmInfo(String filmId) {
