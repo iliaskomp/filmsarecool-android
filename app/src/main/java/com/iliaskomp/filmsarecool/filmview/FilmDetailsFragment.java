@@ -31,7 +31,7 @@ import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_KEY;
  * Created by IliasKomp on 05/10/17.
  */
 
-public class FilmFragment extends Fragment {
+public class FilmDetailsFragment extends Fragment {
     public static final String ARG_FILM_ID = "film_id";
 
     private static RequestQueue mRequestQueue;
@@ -65,7 +65,7 @@ public class FilmFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable
             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_film, container, false);
+        View view = inflater.inflate(R.layout.fragment_film_details, container, false);
 
         mTitleText = (TextView) view.findViewById(R.id.title_text_view);
         mRuntimeText = (TextView) view.findViewById(R.id.runtime_text_view);
@@ -99,7 +99,6 @@ public class FilmFragment extends Fragment {
     }
 
     void fetchFilmInfo(String filmId) {
-//        https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
 
         String requestUrl = API_BASE_URL + "movie/" + filmId + "?api_key=" + API_KEY;
 
@@ -131,11 +130,11 @@ public class FilmFragment extends Fragment {
         return film;
     }
 
-    public static FilmFragment newInstance(String filmId) {
+    public static FilmDetailsFragment newInstance(String filmId) {
         Bundle args = new Bundle();
         args.putString(ARG_FILM_ID, filmId);
 
-        FilmFragment fragment = new FilmFragment();
+        FilmDetailsFragment fragment = new FilmDetailsFragment();
         fragment.setArguments(args);
         return fragment;
     }

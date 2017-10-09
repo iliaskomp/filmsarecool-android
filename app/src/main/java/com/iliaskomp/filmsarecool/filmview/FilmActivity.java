@@ -21,17 +21,21 @@ public class FilmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_two_fragments);
 
         String filmId = getIntent().getStringExtra(EXTRA_FILM_ID);
-        FilmFragment.newInstance(filmId);
 
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
+
         if (fragment == null) {
-            fragment = FilmFragment.newInstance(filmId);
+
+            Fragment filmFragment = FilmDetailsFragment.newInstance(filmId);
+            Fragment actorsFragment = ActorListFragment.newInstance(filmId);
+
             fm.beginTransaction()
-                    .add(R.id.fragment_container, fragment)
+                    .add(R.id.fragment_container_1, filmFragment)
+                    .add(R.id.fragment_container_2, actorsFragment)
                     .commit();
         }
     }

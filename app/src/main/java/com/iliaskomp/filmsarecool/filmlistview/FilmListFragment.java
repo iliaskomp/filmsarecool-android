@@ -42,8 +42,6 @@ import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_KEY;
  */
 
 public class FilmListFragment extends Fragment {
-    private static final String TAG = "FilmListFragment";
-
     private static final String ARG_QUERY_STRING = "query_string";
 
     private RequestQueue mRequestQueue;
