@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmview;
+package com.iliaskomp.filmsarecool.screenfilm;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,7 +18,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iliaskomp.filmsarecool.R;
-import com.iliaskomp.filmsarecool.filmmodel.FilmFullInfo;
+import com.iliaskomp.filmsarecool.models.film.FilmFullInfo;
 import com.iliaskomp.filmsarecool.network.FilmPosterFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 

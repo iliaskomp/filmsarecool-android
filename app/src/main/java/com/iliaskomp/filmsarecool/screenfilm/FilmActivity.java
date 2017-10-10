@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmview;
+package com.iliaskomp.filmsarecool.screenfilm;
 
 import android.content.Context;
 import android.content.Intent;

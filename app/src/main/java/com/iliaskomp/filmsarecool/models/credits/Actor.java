@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmmodel;
+package com.iliaskomp.filmsarecool.models.credits;
 
 /**
  * Created by IliasKomp on 09/10/17.

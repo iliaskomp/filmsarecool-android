@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmmodel;
+package com.iliaskomp.filmsarecool.models.film;
 
 import android.graphics.Bitmap;
 

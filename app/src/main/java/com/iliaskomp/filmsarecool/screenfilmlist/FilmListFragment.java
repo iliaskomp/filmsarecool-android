@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmlistview;
+package com.iliaskomp.filmsarecool.screenfilmlist;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,9 +21,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.iliaskomp.filmsarecool.filmview.FilmActivity;
+import com.iliaskomp.filmsarecool.screenfilm.FilmActivity;
 import com.iliaskomp.filmsarecool.R;
-import com.iliaskomp.filmsarecool.filmmodel.FilmShortInfo;
+import com.iliaskomp.filmsarecool.models.film.FilmShortInfo;
 import com.iliaskomp.filmsarecool.network.FilmPosterFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 

@@ -8,7 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.iliaskomp.filmsarecool.filmmodel.FilmShortInfo;
+import com.iliaskomp.filmsarecool.models.film.FilmShortInfo;
 import com.iliaskomp.filmsarecool.R;
 import com.iliaskomp.filmsarecool.config.TmdbConfig;
 

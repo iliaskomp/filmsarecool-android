@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmlistview;
+package com.iliaskomp.filmsarecool.screenfilmlist;
 
 import android.app.SearchManager;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmview;
+package com.iliaskomp.filmsarecool.screenfilm;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,9 +20,9 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iliaskomp.filmsarecool.R;
-import com.iliaskomp.filmsarecool.filmmodel.Actor;
-import com.iliaskomp.filmsarecool.filmmodel.Credits;
-import com.iliaskomp.filmsarecool.filmmodel.CrewMember;
+import com.iliaskomp.filmsarecool.models.credits.Actor;
+import com.iliaskomp.filmsarecool.models.credits.Credits;
+import com.iliaskomp.filmsarecool.models.credits.CrewMember;
 import com.iliaskomp.filmsarecool.network.ActorListImageFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 

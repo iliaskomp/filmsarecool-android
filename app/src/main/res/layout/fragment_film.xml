@@ -11,13 +11,13 @@
 
         <fragment
             android:id="@+id/film_details_fragment"
-            class="com.iliaskomp.filmsarecool.filmview.FilmDetailsFragment"
+            class="com.iliaskomp.filmsarecool.screenfilm.FilmDetailsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <fragment
             android:id="@+id/actor_list_fragment"
-            class="com.iliaskomp.filmsarecool.filmview.CreditsFragment"
+            class="com.iliaskomp.filmsarecool.screenfilm.CreditsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

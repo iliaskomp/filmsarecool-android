@@ -10,7 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.iliaskomp.filmsarecool.R;
 import com.iliaskomp.filmsarecool.config.TmdbConfig;
-import com.iliaskomp.filmsarecool.filmmodel.Actor;
+import com.iliaskomp.filmsarecool.models.credits.Actor;
 
 import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_IMAGE_BASE_URL;
 

@@ -1,4 +1,4 @@
-package com.iliaskomp.filmsarecool.filmmodel;
+package com.iliaskomp.filmsarecool.models.credits;
 
 import org.json.JSONException;
 import org.json.JSONObject;
