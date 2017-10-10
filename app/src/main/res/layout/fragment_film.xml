@@ -17,7 +17,7 @@
 
         <fragment
             android:id="@+id/actor_list_fragment"
-            class="com.iliaskomp.filmsarecool.filmview.ActorListFragment"
+            class="com.iliaskomp.filmsarecool.filmview.CreditsFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
@@ -13,42 +14,94 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="6dp"
-                android:paddingTop="6dp">
+                android:text="Director: "/>
 
-                <ImageView
-                    android:layout_width="@dimen/actor_image_width"
-                    android:layout_height="@dimen/actor_image_height"
-                    android:layout_marginEnd="24dp"
-                    android:contentDescription="Actor Image"/>
+            <TextView
+                android:id="@+id/director_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Nolan"/>
+        </LinearLayout>
 
-                <TextView
-                    android:textColor="#000"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="24dp"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Name"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:textColor="#000"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical"
-                    android:text="Character"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Writer: "/>
 
-            </LinearLayout>
+            <TextView
+                android:id="@+id/writer_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Nolan"/>
+        </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dip"
-                android:background="#000"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Composer: "/>
+
+            <TextView
+                android:id="@+id/composer_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Nolan"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp">
+
+            <ImageView
+                android:layout_width="@dimen/actor_image_width"
+                android:layout_height="@dimen/actor_image_height"
+                android:layout_marginEnd="24dp"
+                android:contentDescription="Actor Image"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="24dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Name"
+                android:textColor="#000"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Character"
+                android:textColor="#000"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="#000"/>
 
         <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                                                 android:id="@+id/actor_list_recycler_view"

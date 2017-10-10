@@ -21,6 +21,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iliaskomp.filmsarecool.R;
 import com.iliaskomp.filmsarecool.filmmodel.Actor;
+import com.iliaskomp.filmsarecool.filmmodel.Credits;
+import com.iliaskomp.filmsarecool.filmmodel.CrewMember;
 import com.iliaskomp.filmsarecool.network.ActorListImageFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 
@@ -38,7 +40,7 @@ import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_KEY;
  * Created by IliasKomp on 09/10/17.
  */
 
-public class ActorListFragment extends Fragment{
+public class CreditsFragment extends Fragment{
     private static final String ARG_FILM_ID  = "film_id";
 
     private RequestQueue mRequestQueue;
@@ -46,7 +48,12 @@ public class ActorListFragment extends Fragment{
     private RecyclerView mActorRecyclerView;
     private ActorAdapter mActorAdapter;
 
-    private List<Actor> mActors;
+    private TextView mDirectorText;
+    private TextView mWriterText;
+    private TextView mComposerText;
+
+//    private List<Actor> mActors;
+    private Credits mCredits;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +62,7 @@ public class ActorListFragment extends Fragment{
         if (getArguments() != null) {
             mRequestQueue = RequestQueueSingleton.getInstance(getActivity()).getRequestQueue();
             String filmId = (String)getArguments().get(ARG_FILM_ID);
-            fetchActorList(filmId);
+            fetchCredits(filmId);
         }
     }
 
@@ -67,18 +74,22 @@ public class ActorListFragment extends Fragment{
         mActorRecyclerView = (RecyclerView) view.findViewById(R.id.actor_list_recycler_view);
         mActorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        mDirectorText = (TextView) view.findViewById(R.id.director_text_view);
+        mWriterText = (TextView) view.findViewById(R.id.writer_text_view);
+        mComposerText = (TextView) view.findViewById(R.id.composer_text_view);
+
         return view;
     }
 
-    private void fetchActorList(String filmId) {
+    private void fetchCredits(String filmId) {
         String requestUrl = API_BASE_URL + "movie/" + filmId + "/credits" + "?api_key=" + API_KEY;
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, requestUrl, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                mActors = deserializeResult(response);
-                updateUI(mActors);
+                mCredits = deserializeResult(response);
+                updateUI(mCredits);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -90,27 +101,56 @@ public class ActorListFragment extends Fragment{
         mRequestQueue.add(request);
     }
 
-    private void updateUI(List<Actor> actors) {
-        mActorAdapter = new ActorAdapter(actors);
+    private void updateUI(Credits credits) {
+        mActorAdapter = new ActorAdapter(credits.getActors());
         mActorRecyclerView.setAdapter(mActorAdapter);
+
+        mDirectorText.setText(credits.getDirector().getName());
+        mWriterText.setText(credits.getWriter().getName());
+        mComposerText.setText(credits.getComposer().getName());
     }
 
-    private List<Actor> deserializeResult(JSONObject response) {
+    private Credits deserializeResult(JSONObject response) {
+        Credits credits = new Credits();
         List<Actor> actors = new ArrayList<>();
 
         try {
-            JSONArray results = response.getJSONArray("cast");
+            JSONArray cast = response.getJSONArray("cast");
+            JSONArray crew = response.getJSONArray("crew");
 
             Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
-            for (int i = 0; i < results.length(); i++) {
-                Actor actor = gson.fromJson(String.valueOf(results.getJSONObject(i)), Actor.class);
+            for (int i = 0; i < cast.length(); i++) {
+                Actor actor = gson.fromJson(String.valueOf(cast.getJSONObject(i)), Actor.class);
                 actors.add(actor);
             }
+
+            for (int i = 0; i < crew.length(); i++) {
+                JSONObject crewObject = crew.getJSONObject(i);
+                String job = (String) crewObject.get("job");
+
+                switch (job) {
+                    case "Director":
+                        CrewMember director = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
+                        credits.setDirector(director);
+                        break;
+                    case "Screenplay":
+                        CrewMember writer = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
+                        credits.setWriter(writer);
+                        break;
+                    case "Original Music Composer":
+                        CrewMember composer = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
+                        credits.setComposer(composer);
+                        break;
+                }
+            }
+
         } catch (JSONException e) {
 //            Toast.makeText(getActivity(), "There has been a GSON error.", Toast.LENGTH_LONG).show();
         }
-        return actors;
+
+        credits.setActors(actors);
+        return credits;
     }
 
     private class ActorHolder extends RecyclerView.ViewHolder {
@@ -130,6 +170,11 @@ public class ActorListFragment extends Fragment{
             mActorName.setText(actor.getName());
             mActorCharacter.setText(actor.getCharacter());
             ActorListImageFetching.setActorImage(actor, mActorImageView, getActivity());
+
+//            mDirectorText.setText(actor.getDirector());
+//            mWriterText.setText(actor.getWriter());
+//            mComposerText.setText(actor.getComposer());
+
         }
     }
 
@@ -159,11 +204,11 @@ public class ActorListFragment extends Fragment{
         }
     }
 
-    public static ActorListFragment newInstance(String filmId) {
+    public static CreditsFragment newInstance(String filmId) {
         Bundle args = new Bundle();
         args.putString(ARG_FILM_ID, filmId);
 
-        ActorListFragment fragment = new ActorListFragment();
+        CreditsFragment fragment = new CreditsFragment();
         fragment.setArguments(args);
         return fragment;
     }

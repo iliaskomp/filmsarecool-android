@@ -31,7 +31,7 @@ public class FilmActivity extends AppCompatActivity {
         if (fragment == null) {
 
             Fragment filmFragment = FilmDetailsFragment.newInstance(filmId);
-            Fragment actorsFragment = ActorListFragment.newInstance(filmId);
+            Fragment actorsFragment = CreditsFragment.newInstance(filmId);
 
             fm.beginTransaction()
                     .add(R.id.fragment_container_1, filmFragment)

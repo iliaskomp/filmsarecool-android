@@ -45,9 +45,6 @@ public class FilmDetailsFragment extends Fragment {
     private TextView mImdbRatingText;
     private TextView mTmdbRatingText;
     private TextView mOverviewText;
-    private TextView mDirectorText;
-    private TextView mWriterText;
-    private TextView mComposerText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,9 +73,6 @@ public class FilmDetailsFragment extends Fragment {
         mImdbRatingText = (TextView) view.findViewById(R.id.imdb_rating_text_view);
         mTmdbRatingText = (TextView) view.findViewById(R.id.tmdb_rating_text_view);
         mOverviewText = (TextView) view.findViewById(R.id.overview_text_view);
-        mDirectorText = (TextView) view.findViewById(R.id.director_text_view);
-        mWriterText = (TextView) view.findViewById(R.id.writer_text_view);
-        mComposerText = (TextView) view.findViewById(R.id.composer_text_view);
 
         return view;
     }
@@ -91,9 +85,6 @@ public class FilmDetailsFragment extends Fragment {
         mBudgetText.setText(film.getBudget());
         mRevenueText.setText(film.getRevenue());
         mTmdbRatingText.setText(film.getVoteAverage());
-        mDirectorText.setText(film.getDirector());
-        mWriterText.setText(film.getWriter());
-        mComposerText.setText(film.getComposer());
 
         FilmPosterFetching.setPosterImage(film, mPosterImage, getActivity());
     }

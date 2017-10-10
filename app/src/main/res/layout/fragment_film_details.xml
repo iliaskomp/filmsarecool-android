@@ -236,55 +236,5 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Director: "/>
-
-            <TextView
-                android:id="@+id/director_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Nolan"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Writer: "/>
-
-            <TextView
-                android:id="@+id/writer_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Nolan"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Composer: "/>
-
-            <TextView
-                android:id="@+id/composer_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Nolan"/>
-        </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
