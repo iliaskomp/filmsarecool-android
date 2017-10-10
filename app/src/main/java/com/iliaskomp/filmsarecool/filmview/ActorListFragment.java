@@ -3,11 +3,13 @@ package com.iliaskomp.filmsarecool.filmview;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -40,7 +42,7 @@ public class ActorListFragment extends Fragment{
 
     private RequestQueue mRequestQueue;
 
-    private RecyclerView mFilmRecyclerView;
+    private RecyclerView mActorRecyclerView;
     private ActorAdapter mActorAdapter;
 
     private List<Actor> mActors;
@@ -61,8 +63,8 @@ public class ActorListFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_actor_list, container, false);
 
-        mFilmRecyclerView = (RecyclerView) view.findViewById(R.id.actor_list_recycler_view);
-        mFilmRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        mActorRecyclerView = (RecyclerView) view.findViewById(R.id.actor_list_recycler_view);
+        mActorRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         return view;
     }
@@ -75,7 +77,7 @@ public class ActorListFragment extends Fragment{
             @Override
             public void onResponse(JSONObject response) {
                 mActors = deserializeResult(response);
-//                updateUI(mActors);
+                updateUI(mActors);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -85,6 +87,11 @@ public class ActorListFragment extends Fragment{
         });
 
         mRequestQueue.add(request);
+    }
+
+    private void updateUI(List<Actor> actors) {
+        mActorAdapter = new ActorAdapter(actors);
+        mActorRecyclerView.setAdapter(mActorAdapter);
     }
 
     private List<Actor> deserializeResult(JSONObject response) {
@@ -106,13 +113,21 @@ public class ActorListFragment extends Fragment{
     }
 
     private class ActorHolder extends RecyclerView.ViewHolder {
+        private ImageView mActorImageView;
+        private TextView mActorName;
+        private TextView mActorCharacter;
 
         public ActorHolder(View itemView) {
             super(itemView);
+
+            mActorImageView = (ImageView) itemView.findViewById(R.id.actor_item_image);
+            mActorName = (TextView) itemView.findViewById(R.id.actor_item_name);
+            mActorCharacter = (TextView) itemView.findViewById(R.id.actor_item_character);
         }
 
         public void bindActor(Actor actor) {
-
+            mActorName.setText(actor.getName());
+            mActorCharacter.setText(actor.getCharacter());
         }
     }
 
@@ -126,7 +141,7 @@ public class ActorListFragment extends Fragment{
         @Override
         public ActorHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_actor, parent, false);
             return new ActorHolder(view);
         }
 

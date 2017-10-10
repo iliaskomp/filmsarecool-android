@@ -14,4 +14,16 @@ public class Actor {
     private int castId;
     private int order;
 
+
+    public String getName() {
+        return name;
+    }
+
+    public String getCharacter() {
+        return character;
+    }
+
+    public String getProfilePath() {
+        return profilePath;
+    }
 }

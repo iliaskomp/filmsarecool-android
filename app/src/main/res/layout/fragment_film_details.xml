@@ -6,7 +6,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="20dp"
+    android:layout_margin="12dp"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="89dp">
 
