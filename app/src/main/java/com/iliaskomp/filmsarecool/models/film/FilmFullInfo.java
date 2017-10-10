@@ -1,12 +1,23 @@
 package com.iliaskomp.filmsarecool.models.film;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by IliasKomp on 05/10/17.
  */
 
 public class FilmFullInfo extends FilmShortInfo {
+
+    private class Genre {
+        int id;
+        String name;
+
+        public String getName() {
+            return name;
+        }
+    }
+
     private int voteCount;
     private int budget;
     private String homepage;
@@ -20,11 +31,11 @@ public class FilmFullInfo extends FilmShortInfo {
     private double voteAverage;
     private ArrayList<Genre> genres;
 
-    public String getRuntimeString() {
-        return runtime + " minutes";
+    private String getRuntimeString() {
+        return runtime == 0 ? "" : runtime + " minutes";
     }
 
-    public String getGenresString() {
+    private String getGenresString() {
         switch (genres.size()) {
             case 0:
                 return "";
@@ -35,6 +46,22 @@ public class FilmFullInfo extends FilmShortInfo {
             default:
                 return genres.get(0).getName() + ", " + genres.get(1).getName() + ", " + genres.get(2).getName();
         }
+    }
+
+    public String getRuntimeGenresString() {
+        String runtime = getRuntimeString();
+        String genres = getGenresString();
+
+        if (!runtime.isEmpty() && !genres.isEmpty()) {
+            return getRuntimeString() + " - " + getGenresString();
+        } else if (runtime.isEmpty() && genres.isEmpty()) {
+            return "";
+        } else if (runtime.isEmpty()) {
+            return getGenresString();
+        } else if (genres.isEmpty()) {
+            return getRuntimeString();
+        }
+        return "";
     }
 
     public String getOverview() {
@@ -53,24 +80,35 @@ public class FilmFullInfo extends FilmShortInfo {
         return "Nolan Test";
     }
 
-    public String getBudget() {
-        return "$" + budget;
+    private String getBudget() {
+        return String.format(Locale.US, "%,d", budget);
     }
 
-    public String getRevenue() {
-        return "$" + revenue;
+    private String getRevenue() {
+        return String.format(Locale.US, "%,d", revenue);
+    }
+
+    public String getBudgetRevenueString() {
+        String budget = getBudget();
+        String revenue = getRevenue();
+
+        if (!isNullorZero(budget) && !isNullorZero(revenue)) {
+            return "$" + getBudget() + " - " + "$" + getRevenue();
+        } else if (isNullorZero(budget) && isNullorZero(revenue)) {
+            return "";
+        } else if (isNullorZero(budget)) {
+            return "$" + getRevenue();
+        } else if (isNullorZero(revenue)) {
+            return "$" + getBudget();
+        }
+        return "";
     }
 
     public String getVoteAverage() {
         return String.valueOf(voteAverage);
     }
 
-    private class Genre {
-        int id;
-        String name;
-
-        public String getName() {
-            return name;
-        }
+    private boolean isNullorZero(String s) {
+        return s.isEmpty() || s.equals("0");
     }
 }

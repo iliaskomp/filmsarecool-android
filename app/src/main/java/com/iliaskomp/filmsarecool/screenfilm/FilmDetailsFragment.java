@@ -37,10 +37,8 @@ public class FilmDetailsFragment extends Fragment {
     private static RequestQueue mRequestQueue;
 
     private TextView mTitleText;
-    private TextView mRuntimeText;
-    private TextView mGenresText;
-    private TextView mBudgetText;
-    private TextView mRevenueText;
+    private TextView mRuntimeGenresText;
+    private TextView mBudgetRevenueText;
     private ImageView mPosterImage;
     private TextView mImdbRatingText;
     private TextView mTmdbRatingText;
@@ -65,10 +63,8 @@ public class FilmDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_film_details, container, false);
 
         mTitleText = (TextView) view.findViewById(R.id.title_text_view);
-        mRuntimeText = (TextView) view.findViewById(R.id.runtime_text_view);
-        mGenresText = (TextView) view.findViewById(R.id.genres_text_view);
-        mBudgetText = (TextView) view.findViewById(R.id.budget_text_view);
-        mRevenueText = (TextView) view.findViewById(R.id.revenue_text_view);
+        mRuntimeGenresText = (TextView) view.findViewById(R.id.runtime_genres_text_view);
+        mBudgetRevenueText = (TextView) view.findViewById(R.id.budget_revenue_text_view);
         mPosterImage = (ImageView) view.findViewById(R.id.poster_image_view);
         mImdbRatingText = (TextView) view.findViewById(R.id.imdb_rating_text_view);
         mTmdbRatingText = (TextView) view.findViewById(R.id.tmdb_rating_text_view);
@@ -78,15 +74,13 @@ public class FilmDetailsFragment extends Fragment {
     }
 
     private void updateUI(FilmFullInfo film) {
-        mTitleText.setText(film.getTitle());
-        mRuntimeText.setText(film.getRuntimeString());
-        mGenresText.setText(film.getGenresString());
-        mOverviewText.setText(film.getOverview());
-        mBudgetText.setText(film.getBudget());
-        mRevenueText.setText(film.getRevenue());
-        mTmdbRatingText.setText(film.getVoteAverage());
-
         FilmPosterFetching.setPosterImage(film, mPosterImage, getActivity());
+
+        mTitleText.setText(film.getTitle());
+        mRuntimeGenresText.setText(film.getRuntimeGenresString());
+        mOverviewText.setText(film.getOverview());
+        mBudgetRevenueText.setText(film.getBudgetRevenueString());
+        mTmdbRatingText.setText(film.getVoteAverage());
     }
 
     void fetchFilmInfo(String filmId) {
