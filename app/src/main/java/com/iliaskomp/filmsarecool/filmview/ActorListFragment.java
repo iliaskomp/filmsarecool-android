@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iliaskomp.filmsarecool.R;
 import com.iliaskomp.filmsarecool.filmmodel.Actor;
+import com.iliaskomp.filmsarecool.network.ActorListImageFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
 
 import org.json.JSONArray;
@@ -128,6 +129,7 @@ public class ActorListFragment extends Fragment{
         public void bindActor(Actor actor) {
             mActorName.setText(actor.getName());
             mActorCharacter.setText(actor.getCharacter());
+            ActorListImageFetching.setActorImage(actor, mActorImageView, getActivity());
         }
     }
 
