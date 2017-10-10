@@ -1,5 +1,6 @@
 package com.iliaskomp.filmsarecool.filmmodel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,9 +9,9 @@ import java.util.List;
 
 public class Credits {
     private List<Actor> mActors;
-    private CrewMember director;
-    private CrewMember writer;
-    private CrewMember composer;
+    private List<CrewMember> directors = new ArrayList<>();
+    private List<CrewMember> writers = new ArrayList<>();
+    private List<CrewMember> composers = new ArrayList<>();
 
     //    private List<CrewMember> crew;
 
@@ -23,29 +24,41 @@ public class Credits {
         this.mActors = actors;
     }
 
-    public CrewMember getDirector() {
-        return director;
+    public String getDirectorsString() {
+        return getStringFromList(directors);
     }
 
-    public void setDirector(CrewMember director) {
-        this.director = director;
+    public void addDirector(CrewMember director) {
+        directors.add(director);
     }
 
-    public CrewMember getWriter() {
-        return writer;
+    public String getWritersString() {
+        return getStringFromList(writers);
     }
 
-    public void setWriter(CrewMember writer) {
-        this.writer = writer;
+    public void addWriter(CrewMember writer) {
+        writers.add(writer);
     }
 
-    public CrewMember getComposer() {
-        return composer;
+    public String getComposersString() {
+        return getStringFromList(composers);
     }
 
-    public void setComposer(CrewMember composer) {
-        this.composer = composer;
+    public void addComposer(CrewMember composer) {
+        composers.add(composer);
     }
 
+    private String getStringFromList(List<CrewMember> members) {
+        String string = "";
+        if (!members.isEmpty()) {
+            string += members.get(0).getName();
+            for (int i = 1; i < members.size(); i++) {
+                string += ", " + members.get(i).getName();
+            }
+        } else {
+            string += " - ";
+        }
 
+        return string;
+    }
 }

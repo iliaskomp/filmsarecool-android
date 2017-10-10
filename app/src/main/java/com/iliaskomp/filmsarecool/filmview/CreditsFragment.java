@@ -105,9 +105,9 @@ public class CreditsFragment extends Fragment{
         mActorAdapter = new ActorAdapter(credits.getActors());
         mActorRecyclerView.setAdapter(mActorAdapter);
 
-        mDirectorText.setText(credits.getDirector().getName());
-        mWriterText.setText(credits.getWriter().getName());
-        mComposerText.setText(credits.getComposer().getName());
+        mDirectorText.setText(credits.getDirectorsString());
+        mWriterText.setText(credits.getWritersString());
+        mComposerText.setText(credits.getComposersString());
     }
 
     private Credits deserializeResult(JSONObject response) {
@@ -130,17 +130,17 @@ public class CreditsFragment extends Fragment{
                 String job = (String) crewObject.get("job");
 
                 switch (job) {
-                    case "Director":
-                        CrewMember director = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
-                        credits.setDirector(director);
+                    case CrewMember.DIRECTOR:
+                        CrewMember director = CrewMember.constructCrewMember(crewObject);
+                        credits.addDirector(director);
                         break;
-                    case "Screenplay":
-                        CrewMember writer = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
-                        credits.setWriter(writer);
+                    case CrewMember.WRITER:
+                        CrewMember writer = CrewMember.constructCrewMember(crewObject);
+                        credits.addWriter(writer);
                         break;
-                    case "Original Music Composer":
-                        CrewMember composer = new CrewMember((int)crewObject.get("id"), job, (String)crewObject.get("name"), (String)crewObject.get("profile_path"));
-                        credits.setComposer(composer);
+                    case CrewMember.COMPOSER:
+                        CrewMember composer = CrewMember.constructCrewMember(crewObject);
+                        credits.addComposer(composer);
                         break;
                 }
             }
