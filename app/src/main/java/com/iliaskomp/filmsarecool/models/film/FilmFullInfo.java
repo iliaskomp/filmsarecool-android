@@ -104,6 +104,13 @@ public class FilmFullInfo extends FilmShortInfo {
         return "";
     }
 
+    public String getReleaseYear() {
+        if (releaseDate != null) {
+            return releaseDate.substring(0,4);
+        }
+        return "";
+    }
+
     public String getVoteAverage() {
         return String.valueOf(voteAverage);
     }

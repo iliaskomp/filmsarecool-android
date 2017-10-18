@@ -1,5 +1,7 @@
 package com.iliaskomp.filmsarecool.screenfilm;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.iliaskomp.filmsarecool.R;
+import com.iliaskomp.filmsarecool.config.SiteConfig;
 import com.iliaskomp.filmsarecool.models.film.FilmFullInfo;
 import com.iliaskomp.filmsarecool.network.FilmPosterFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
@@ -42,6 +45,7 @@ public class FilmDetailsFragment extends Fragment {
     private ImageView mPosterImage;
     private TextView mImdbRatingText;
     private TextView mTmdbRatingText;
+    private ImageView mWikiImageView;
     private TextView mOverviewText;
 
     @Override
@@ -68,12 +72,13 @@ public class FilmDetailsFragment extends Fragment {
         mPosterImage = (ImageView) view.findViewById(R.id.poster_image_view);
         mImdbRatingText = (TextView) view.findViewById(R.id.imdb_rating_text_view);
         mTmdbRatingText = (TextView) view.findViewById(R.id.tmdb_rating_text_view);
+        mWikiImageView = (ImageView) view.findViewById(R.id.wiki_image_view);
         mOverviewText = (TextView) view.findViewById(R.id.overview_text_view);
 
         return view;
     }
 
-    private void updateUI(FilmFullInfo film) {
+    private void updateUI(final FilmFullInfo film) {
         FilmPosterFetching.setPosterImage(film, mPosterImage, getActivity());
 
         mTitleText.setText(film.getTitle());
@@ -81,6 +86,15 @@ public class FilmDetailsFragment extends Fragment {
         mOverviewText.setText(film.getOverview());
         mBudgetRevenueText.setText(film.getBudgetRevenueString());
         mTmdbRatingText.setText(film.getVoteAverage());
+        mWikiImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String wikiUrl = SiteConfig.WIKI_SEARCH_URL + film.getTitle() + " film";
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(wikiUrl));
+                startActivity(intent);
+            }
+        });
     }
 
     void fetchFilmInfo(String filmId) {
@@ -93,7 +107,7 @@ public class FilmDetailsFragment extends Fragment {
             public void onResponse(JSONObject response) {
                 FilmFullInfo film = deserializeResult(response);
                 updateUI(film);
-                // getCredits, getVideos
+                // getVideos
             }
         }, new Response.ErrorListener() {
             @Override
