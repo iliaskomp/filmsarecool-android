@@ -22,6 +22,8 @@ public class FilmFullInfo extends FilmShortInfo {
     private int budget;
     private String homepage;
     private String imdbId;
+    private String imdbRating;
+    private String imdbVotes;
     private int revenue;
     private int runtime;
     private String status;
@@ -66,6 +68,26 @@ public class FilmFullInfo extends FilmShortInfo {
 
     public String getOverview() {
         return overview;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getImdbRating() {
+        return imdbRating;
+    }
+
+    public void setImdbRating(String imdbRating) {
+        this.imdbRating = imdbRating;
+    }
+
+    public String getImdbVotes() {
+        return imdbVotes;
+    }
+
+    public void setImdbVotes(String imdbVotes) {
+        this.imdbVotes = imdbVotes;
     }
 
     public String getDirector() {

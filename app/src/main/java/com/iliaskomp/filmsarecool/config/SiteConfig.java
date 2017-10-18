@@ -6,4 +6,6 @@ package com.iliaskomp.filmsarecool.config;
 
 public class SiteConfig {
     public static final String WIKI_SEARCH_URL = "https://en.m.wikipedia.org/w/index.php?search=";
+
+    public static final String BASE_FILM_IMDB_URL = "http://www.imdb.com/title/";
 }

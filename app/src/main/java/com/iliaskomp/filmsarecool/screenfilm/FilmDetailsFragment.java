@@ -2,6 +2,7 @@ package com.iliaskomp.filmsarecool.screenfilm;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,8 +25,13 @@ import com.iliaskomp.filmsarecool.config.SiteConfig;
 import com.iliaskomp.filmsarecool.models.film.FilmFullInfo;
 import com.iliaskomp.filmsarecool.network.FilmPosterFetching;
 import com.iliaskomp.filmsarecool.network.RequestQueueSingleton;
+import com.iliaskomp.filmsarecool.util.SiteUtilities;
 
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+import java.io.IOException;
 
 import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_BASE_URL;
 import static com.iliaskomp.filmsarecool.config.TmdbConfig.API_KEY;
@@ -89,7 +95,7 @@ public class FilmDetailsFragment extends Fragment {
         mWikiImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String wikiUrl = SiteConfig.WIKI_SEARCH_URL + film.getTitle() + " film";
+                String wikiUrl = SiteUtilities.getWikiSearchUrl(film);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(wikiUrl));
                 startActivity(intent);
@@ -106,6 +112,7 @@ public class FilmDetailsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 FilmFullInfo film = deserializeResult(response);
+                new ImdbScraper().execute(film);
                 updateUI(film);
                 // getVideos
             }
@@ -137,4 +144,36 @@ public class FilmDetailsFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    private class ImdbScraper extends AsyncTask<FilmFullInfo, Void, FilmFullInfo> {
+
+        @Override
+        protected void onPostExecute(FilmFullInfo film) {
+            super.onPostExecute(film);
+            mImdbRatingText.setText(film.getImdbRating());
+        }
+
+        @Override
+        protected FilmFullInfo doInBackground(FilmFullInfo... films) {
+            FilmFullInfo film = films[0];
+            String imdbUrl = SiteConfig.BASE_FILM_IMDB_URL + film.getImdbId();
+
+            try {
+                Document doc = Jsoup.connect(imdbUrl).get();
+                String rating = doc.select("span[itemprop=ratingValue]").get(0).text();
+                String votes = doc.select("span[itemprop=ratingCount]").get(0).text();
+
+                film.setImdbRating(rating);
+                film.setImdbVotes(votes);
+            } catch (IOException e) {
+                film.setImdbRating("");
+                film.setImdbVotes("");
+            }
+
+            return film;
+        }
+
+
+    }
+
 }
